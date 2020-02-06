@@ -80,7 +80,7 @@ void setup() {
 
 void loop() {
   // For debug output
-  ulpDump(0, 20, SLOW_PROG_ADDR);
+  ulpDump();
 
   // Wait
   delay(1000);

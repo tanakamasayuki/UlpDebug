@@ -39,6 +39,12 @@ const char* ulpCmp2Str[] = {
 
 void ulpDisassemblerDump(int pos) {
   ulp_insn_t *prog = (ulp_insn_t*)&RTC_SLOW_MEM[pos];
+
+  if(prog->halt.opcode==0 && RTC_SLOW_MEM[pos] !=0){
+    Serial.printf("%04X : %08X DATA %5d\t\t\t\t// ST ADDR:0x%04X\n", pos, RTC_SLOW_MEM[pos], RTC_SLOW_MEM[pos] & 0xFFFF, RTC_SLOW_MEM[pos] >> 21);
+    return;
+  }
+
   Serial.printf("%04X : %08X PROG ", pos, RTC_SLOW_MEM[pos]);
 
   switch( prog->halt.opcode ){
@@ -205,17 +211,13 @@ void ulpDisassemblerDump(int pos) {
   Serial.printf("\n");
 }
 
-void ulpDataDump(int pos) {
-  Serial.printf("%04X : %08X DATA %5d\t\t\t\t// ST ADDR:0x%04X\n", pos, RTC_SLOW_MEM[pos], RTC_SLOW_MEM[pos] & 0xFFFF, RTC_SLOW_MEM[pos] >> 21);
-}
-
-void ulpDump(int start, int end, int programAddr) {
+void ulpDump(int start = 0, int end = 8000, int programAddr = 0) {
   Serial.printf("====================================\n");
   for ( int i = start ; i < end ; i++ ) {
-    if ( i < programAddr ) {
-      ulpDataDump(i);
-    } else {
-      ulpDisassemblerDump(i);
+    ulpDisassemblerDump(i);
+
+    if( i < (8000-5) && RTC_SLOW_MEM[i+1] == 0 && RTC_SLOW_MEM[i+2] == 0 && RTC_SLOW_MEM[i+3] == 0 && RTC_SLOW_MEM[i+4] == 0 ){
+      break;
     }
   }
 }
