@@ -211,12 +211,12 @@ void ulpDisassemblerDump(int pos) {
   Serial.printf("\n");
 }
 
-void ulpDump(int start = 0, int end = 8000, int programAddr = 0) {
+void ulpDump(int start = 0, int end = 2047, int programAddr = 0) {
   Serial.printf("====================================\n");
   for ( int i = start ; i < end ; i++ ) {
     ulpDisassemblerDump(i);
 
-    if( i < (8000-5) && RTC_SLOW_MEM[i+1] == 0 && RTC_SLOW_MEM[i+2] == 0 && RTC_SLOW_MEM[i+3] == 0 && RTC_SLOW_MEM[i+4] == 0 ){
+    if( i < (2047-5) && RTC_SLOW_MEM[i+1] == 0 && RTC_SLOW_MEM[i+2] == 0 && RTC_SLOW_MEM[i+3] == 0 && RTC_SLOW_MEM[i+4] == 0 ){
       break;
     }
   }

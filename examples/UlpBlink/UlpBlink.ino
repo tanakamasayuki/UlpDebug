@@ -14,7 +14,7 @@ void ULP_BLINK(uint32_t us) {
   ulp_set_wakeup_period(0, us);
 
   // Slow memory initialization
-  memset(RTC_SLOW_MEM, 0, 8000);
+  memset(RTC_SLOW_MEM, 0, 8192);
 
   // Blink status initialization
   RTC_SLOW_MEM[SLOW_BLINK_STATE] = 0;
