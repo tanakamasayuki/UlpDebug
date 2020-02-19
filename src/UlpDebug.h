@@ -41,7 +41,7 @@ void ulpDisassemblerDump(int pos) {
   ulp_insn_t *prog = (ulp_insn_t*)&RTC_SLOW_MEM[pos];
 
   if(prog->halt.opcode==0 && RTC_SLOW_MEM[pos] !=0){
-    Serial.printf("%04X : %08X DATA %5d\t\t\t\t// ST ADDR:0x%04X\n", pos, RTC_SLOW_MEM[pos], RTC_SLOW_MEM[pos] & 0xFFFF, RTC_SLOW_MEM[pos] >> 21);
+    Serial.printf("%04X : %08X DATA %5d\t\t\t\t// ST ADDR:0x%04X\n", pos, RTC_SLOW_MEM[pos], (int16_t)(RTC_SLOW_MEM[pos] & 0xFFFF), RTC_SLOW_MEM[pos] >> 21);
     return;
   }
 
@@ -88,7 +88,7 @@ void ulpDisassemblerDump(int pos) {
                               Serial.printf("ADD    %s, %s, %s\t\t\t// %s = %s + %s", ulpRegStr[prog->alu_reg.dreg], ulpRegStr[prog->alu_reg.sreg], ulpRegStr[prog->alu_reg.treg], ulpRegStr[prog->alu_reg.dreg], ulpRegStr[prog->alu_reg.sreg], ulpRegStr[prog->alu_reg.treg]);
                             } else {
                               // imm
-                              Serial.printf("ADD    %s, %s, %3d\t\t\t// %s = %s + %d", ulpRegStr[prog->alu_imm.dreg], ulpRegStr[prog->alu_imm.sreg], prog->alu_imm.imm, ulpRegStr[prog->alu_imm.dreg], ulpRegStr[prog->alu_imm.sreg], prog->alu_imm.imm);
+                              Serial.printf("ADD    %s, %s, %3d\t\t\t// %s = %s + %d", ulpRegStr[prog->alu_imm.dreg], ulpRegStr[prog->alu_imm.sreg], (int16_t)prog->alu_imm.imm, ulpRegStr[prog->alu_imm.dreg], ulpRegStr[prog->alu_imm.sreg], (int16_t)prog->alu_imm.imm);
                             }
                           } else if(prog->alu_reg.sel == ALU_SEL_SUB){
                             // SUB
@@ -97,7 +97,7 @@ void ulpDisassemblerDump(int pos) {
                               Serial.printf("SUB    %s, %s, %s\t\t\t// %s = %s - %s", ulpRegStr[prog->alu_reg.dreg], ulpRegStr[prog->alu_reg.sreg], ulpRegStr[prog->alu_reg.treg], ulpRegStr[prog->alu_reg.dreg], ulpRegStr[prog->alu_reg.sreg], ulpRegStr[prog->alu_reg.treg]);
                             } else {
                               // imm
-                              Serial.printf("SUB    %s, %s, %3d\t\t\t// %s = %s - %d", ulpRegStr[prog->alu_imm.dreg], ulpRegStr[prog->alu_imm.sreg], prog->alu_imm.imm, ulpRegStr[prog->alu_imm.dreg], ulpRegStr[prog->alu_imm.sreg], prog->alu_imm.imm);
+                              Serial.printf("SUB    %s, %s, %3d\t\t\t// %s = %s - %d", ulpRegStr[prog->alu_imm.dreg], ulpRegStr[prog->alu_imm.sreg], (int16_t)prog->alu_imm.imm, ulpRegStr[prog->alu_imm.dreg], ulpRegStr[prog->alu_imm.sreg], (int16_t)prog->alu_imm.imm);
                             }
                           } else if(prog->alu_reg.sel == ALU_SEL_AND){
                             // AND
@@ -106,7 +106,7 @@ void ulpDisassemblerDump(int pos) {
                               Serial.printf("AND    %s, %s, %s\t\t\t// %s = %s & %s", ulpRegStr[prog->alu_reg.dreg], ulpRegStr[prog->alu_reg.sreg], ulpRegStr[prog->alu_reg.treg], ulpRegStr[prog->alu_reg.dreg], ulpRegStr[prog->alu_reg.sreg], ulpRegStr[prog->alu_reg.treg]);
                             } else {
                               // imm
-                              Serial.printf("AND    %s, %s, %3d\t\t\t// %s = %s & %d", ulpRegStr[prog->alu_imm.dreg], ulpRegStr[prog->alu_imm.sreg], prog->alu_imm.imm, ulpRegStr[prog->alu_imm.dreg], ulpRegStr[prog->alu_imm.sreg], prog->alu_imm.imm);
+                              Serial.printf("AND    %s, %s, %3d\t\t\t// %s = %s & %d", ulpRegStr[prog->alu_imm.dreg], ulpRegStr[prog->alu_imm.sreg], (int16_t)prog->alu_imm.imm, ulpRegStr[prog->alu_imm.dreg], ulpRegStr[prog->alu_imm.sreg], (int16_t)prog->alu_imm.imm);
                             }
                           } else if(prog->alu_reg.sel == ALU_SEL_OR){
                             // OR
@@ -115,7 +115,7 @@ void ulpDisassemblerDump(int pos) {
                               Serial.printf("OR     %s, %s, %s\t\t\t// %s = %s | %s", ulpRegStr[prog->alu_reg.dreg], ulpRegStr[prog->alu_reg.sreg], ulpRegStr[prog->alu_reg.treg], ulpRegStr[prog->alu_reg.dreg], ulpRegStr[prog->alu_reg.sreg], ulpRegStr[prog->alu_reg.treg]);
                             } else {
                               // imm
-                              Serial.printf("OR     %s, %s, %3d\t\t\t// %s = %s | %d", ulpRegStr[prog->alu_imm.dreg], ulpRegStr[prog->alu_imm.sreg], prog->alu_imm.imm, ulpRegStr[prog->alu_imm.dreg], ulpRegStr[prog->alu_imm.sreg], prog->alu_imm.imm);
+                              Serial.printf("OR     %s, %s, %3d\t\t\t// %s = %s | %d", ulpRegStr[prog->alu_imm.dreg], ulpRegStr[prog->alu_imm.sreg], (int16_t)prog->alu_imm.imm, ulpRegStr[prog->alu_imm.dreg], ulpRegStr[prog->alu_imm.sreg], (int16_t)prog->alu_imm.imm);
                             }
                           } else if(prog->alu_reg.sel == ALU_SEL_LSH){
                             // LSH
@@ -124,7 +124,7 @@ void ulpDisassemblerDump(int pos) {
                               Serial.printf("LSH    %s, %s, %s\t\t\t// %s = %s << %s", ulpRegStr[prog->alu_reg.dreg], ulpRegStr[prog->alu_reg.sreg], ulpRegStr[prog->alu_reg.treg], ulpRegStr[prog->alu_reg.dreg], ulpRegStr[prog->alu_reg.sreg], ulpRegStr[prog->alu_reg.treg]);
                             } else {
                               // imm
-                              Serial.printf("LSH    %s, %s, %3d\t\t\t// %s = %s << %d", ulpRegStr[prog->alu_imm.dreg], ulpRegStr[prog->alu_imm.sreg], prog->alu_imm.imm, ulpRegStr[prog->alu_imm.dreg], ulpRegStr[prog->alu_imm.sreg], prog->alu_imm.imm);
+                              Serial.printf("LSH    %s, %s, %3d\t\t\t// %s = %s << %d", ulpRegStr[prog->alu_imm.dreg], ulpRegStr[prog->alu_imm.sreg], (int16_t)prog->alu_imm.imm, ulpRegStr[prog->alu_imm.dreg], ulpRegStr[prog->alu_imm.sreg], (int16_t)prog->alu_imm.imm);
                             }
                           } else if(prog->alu_reg.sel == ALU_SEL_RSH){
                             // RSH
@@ -133,7 +133,7 @@ void ulpDisassemblerDump(int pos) {
                               Serial.printf("RSH    %s, %s, %s\t\t\t// %s = %s >> %s", ulpRegStr[prog->alu_reg.dreg], ulpRegStr[prog->alu_reg.sreg], ulpRegStr[prog->alu_reg.treg], ulpRegStr[prog->alu_reg.dreg], ulpRegStr[prog->alu_reg.sreg], ulpRegStr[prog->alu_reg.treg]);
                             } else {
                               // imm
-                              Serial.printf("RSH    %s, %s, %3d\t\t\t// %s = %s >> %d", ulpRegStr[prog->alu_imm.dreg], ulpRegStr[prog->alu_imm.sreg], prog->alu_imm.imm, ulpRegStr[prog->alu_imm.dreg], ulpRegStr[prog->alu_imm.sreg], prog->alu_imm.imm);
+                              Serial.printf("RSH    %s, %s, %3d\t\t\t// %s = %s >> %d", ulpRegStr[prog->alu_imm.dreg], ulpRegStr[prog->alu_imm.sreg], (int16_t)prog->alu_imm.imm, ulpRegStr[prog->alu_imm.dreg], ulpRegStr[prog->alu_imm.sreg], (int16_t)prog->alu_imm.imm);
                             }
                           } else if(prog->alu_reg.sel == ALU_SEL_MOV){
                             // MOVE
@@ -142,7 +142,7 @@ void ulpDisassemblerDump(int pos) {
                               Serial.printf("MOVE   %s, %s\t\t\t// %s = %s", ulpRegStr[prog->alu_reg.dreg], ulpRegStr[prog->alu_reg.sreg], ulpRegStr[prog->alu_reg.dreg], ulpRegStr[prog->alu_reg.sreg]);
                             } else {
                               // imm
-                              Serial.printf("MOVE   %s, %3d\t\t\t// %s = %d", ulpRegStr[prog->alu_imm.dreg], prog->alu_imm.imm, ulpRegStr[prog->alu_imm.dreg], prog->alu_imm.imm);
+                              Serial.printf("MOVE   %s, %3d\t\t\t// %s = %d", ulpRegStr[prog->alu_imm.dreg], (int16_t)prog->alu_imm.imm, ulpRegStr[prog->alu_imm.dreg], (int16_t)prog->alu_imm.imm);
                             }
                           }
                           break;
